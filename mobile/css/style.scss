@@ -1,0 +1,822 @@
+@charset "utf-8";
+
+// 변수
+$main_font: "Noto Sans KR", sans-serif;
+$main_color1: #2455c5;
+$sub_color1: #fff;
+$sub_color2: #707070;
+$sub_color3: #eaeaea;
+
+// 믹스인
+@mixin boxShadow($x, $y, $blur, $color){
+	box-shadow: $x $y $blur $color;
+}
+@mixin transitionEffect($prop, $duration, $delay){
+	-webkit-transition: $prop $duration;
+	transition: $prop $duration;
+	-webkit-transition-delay: $delay;
+	transition-delay: $delay;
+}
+@mixin transformXY($x, $y){
+	-webkit-transform: translate($x, $y);
+	transform: translate($x, $y);
+}
+@mixin borderBox($w, $style, $color){
+	border: $w $style $color;
+}
+@mixin bgImage($url, $repeat, $position, $sizing){
+	background-image: url($url);
+	background-repeat: $repeat;
+	background-position: $position;
+	background-size: $sizing; /* cover, auto */
+}
+
+// 확장
+%myAfter{
+	display: block;
+	content: "";
+	position: absolute;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+}
+ul, ol {
+	list-style: none;
+}
+a {
+	text-decoration: none;
+	color: #000;
+}
+img {
+	vertical-align: top;
+	max-width: 100%;
+}
+
+/* css */
+.wrapper{
+	max-width: 100%;
+	min-width: 320px;
+}
+.start{
+	height: 100vh;
+}
+.clearfix::before, .clearfix::after{
+content: "";
+display: block;
+}
+.clearfix::after{
+clear: both;
+}
+
+/* Header */
+#header{
+	/* Top */
+	.top{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		height: 5em;
+		width: 100%;
+		padding: 0 20px;
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 9999;
+		box-sizing: border-box;
+	
+		.logo{
+			width: 115px;
+			height: 45px;
+			margin-top: 10px;
+		}
+		.logo h1{
+			font-size: 1em;
+		}
+		.utils{
+			width: 70px;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			align-items: center;
+		
+			a{
+				display: inline-block;
+				width: 35px;
+			
+				&.tab{
+					margin-left: 18px;
+				}
+			}
+		}
+
+		.menu {
+			position: fixed;
+			right: -100vw;
+			top: 0;
+			padding: 10px;
+			width: 100vw;
+			height: 100vh;
+			background-color: $sub_color1;
+			@include transitionEffect(right, 0.4s, 0);
+			box-sizing: border-box;
+		
+			&.active {
+				right: 0;
+			}
+			.close {
+				display: block;
+				position: absolute;
+				right: 30px;
+				top: 30px;
+				width: 24px;
+				height: 24px;
+				text-indent: -9999px;
+				@include bgImage("../images/ico_close.png", no-repeat, 0 0, auto);
+			}
+			.copyright {
+				position: absolute;
+				left: 30px;
+				bottom: 30px;
+				font-size: 12px;
+			}
+		}
+		#gnb {
+			position: relative;
+			margin-top: 5em;
+			padding: 0 20px;
+			height: calc(100% - 5em);
+			overflow: auto; 
+		
+			> ul > li {
+				position: relative;
+			
+				> a {
+					display: block;
+					line-height: 52px;
+					text-indent: 20px;
+					color: $sub_color2;
+					font-size: 0.875em;
+					font-weight: bold;
+					border-bottom: 1px solid $sub_color3;
+				}
+				&.active > a {
+					background-color: $main_color1;
+					color: $sub_color1;
+					border-bottom: none;
+				}
+				> a::after {
+					@extend %myAfter;
+					right: 20px;
+					top: 17px;
+					width: 19px;
+					height: 19px;
+					@include bgImage("../images/ico_tab_open1.png", no-repeat, 0 0, auto);
+				}
+				&.active > a::after {
+					@include bgImage("../images/ico_tab_close1.png", no-repeat, 0 0, auto);
+				}
+			}
+			ul ul {
+				display: none;
+				padding: 10px 0;
+				background-color: $sub_color3;
+			
+				a {
+					display: block;
+					line-height: 30px;
+					text-indent: 20px;
+					font-size: 0.875em;
+				
+					&:focus{
+						color: $main_color1;
+					}
+				}
+			}
+		}
+	}
+	
+	/* Keyvisual */
+	.keyvisual{
+		position: relative;
+		width: 100%;
+		height: 100vh;
+		overflow: hidden;
+	
+		video{
+			position: absolute;
+			left: 50%;
+			top: 0;
+		}
+	}
+
+	/* Text */
+	.text{
+		position: absolute;
+		left: 1.250em;
+		bottom: 25%;
+		color: $sub_color1;
+		font-size: 18px;
+	
+		p.h_name{
+			font-size: 30px;
+			font-weight: bold;
+			line-height: 50px;
+		}
+		a{
+			display: block;
+			text-align: center;
+			margin-top: 15px;
+			width: 150px;
+			line-height: 40px;
+			color: $sub_color1;
+			@include borderBox(2px, solid, $sub_color1);
+			border-radius: 10px;
+			box-sizing: border-box;
+		
+			&:hover{
+				background-color: $sub_color1;
+				color: $main_color1;
+				font-weight: bold;
+			}
+		}
+	}
+}
+@media only screen and (orientation: landscape) {
+	#header .top .menu {
+		width: 50%;
+	}
+	#header .top .menu .copyright {
+		display: none;
+	}
+}
+
+/* Subjects */
+#subjects{
+	padding: 50px 20px 40px 20px;
+	
+	.title{
+		ul{
+			font-size: 0;
+		
+			li{
+				display: inline-block;
+				width: calc(100%/2);
+			
+				a{
+					display: block;
+					text-align: center;
+					width: 100%;
+					line-height: 40px;
+					color: $sub_color1;
+					font-family: $main_font;
+					font-weight: 400;
+					font-size: 17px;
+					border-bottom: 2px solid $sub_color2;
+					background-color: #ccc;
+					box-sizing: border-box;
+				}
+				&.active a{
+					position: relative;
+					top: 2px;
+					color: $main_color1;
+					font-weight: 700;
+					background-color: $sub_color1;
+					@include borderBox(2px, solid, $sub_color2);
+					border-bottom-color: $sub_color1;
+					border-bottom: none; 
+				}
+			}
+		}
+	}
+	
+	.medical_cont{
+		text-align: left;
+		margin-top: 10px;
+		position: relative;
+	
+		ul li{
+			display: inline-block;
+		
+			a{
+				display: block;
+				padding: 0 10px;
+				font-size: 15px;
+				line-height: 25px;
+				position: relative;
+			}
+			&.active a{
+				color: $main_color1;
+				font-weight: bold;
+			}
+			a:after{
+				@extend %myAfter;
+				right: -4px;
+				top: 5px;
+				width: 1px;
+				height: 15px;
+				background-color: $sub_color2;
+			}
+			&.active dl{
+				display: block;
+			}
+		}
+		ul dl{
+			display: none;
+			padding: 20px 10px;
+			position: absolute;
+			top: 90px;
+			left: 0;
+			border-top: 1px solid $sub_color3;
+		
+			dt{
+				color: $sub_color2;
+				font-size: 22px;
+				font-weight: bold;
+			}
+			dd{
+				margin-top: 30px;
+				line-height: 25px;
+				color: #ccc;
+				font-size: 16px;
+			}
+		}
+	}
+	
+	.vaccination_cont{
+		display: none;
+		text-align: left;
+		margin-top: 10px;
+		position: relative;
+	
+		ul li{
+			display: inline-block;
+		
+			a{
+				display: block;
+				padding: 0 10px;
+				font-size: 15px;
+				line-height: 25px;
+				position: relative;
+			}
+			&.active a{
+				color: $main_color1;
+				font-weight: bold;
+			}
+			a:after{
+				@extend %myAfter;
+				right: -4px;
+				top: 5px;
+				width: 1px;
+				height: 15px;
+				background-color: $sub_color2;
+			}
+			&.active dl{
+				display: block;
+			}
+		}
+		ul dl{
+			display: none;
+			padding: 20px 10px;
+			position: absolute;
+			top: 90px;
+			left: 0;
+			border-top: 1px solid $sub_color3;
+		
+			dt{
+				color: $sub_color2;
+				font-size: 22px;
+				font-weight: bold;
+			}
+			dd{
+				margin-top: 30px;
+				line-height: 25px;
+				color: #ccc;
+				font-size: 16px;
+			}
+		}
+	}
+
+	.more_btn{
+		margin-top: 250px;
+		margin-left: 10px;
+	
+		a{
+			display: block;
+			text-align: center;
+			width: 165px;
+			line-height: 50px;
+			color: $sub_color1;
+			font-weight: bold;
+			background-color: $main_color1;
+			@include boxShadow(2px, 2px, 2px, rgba(0,0,0,0.3));
+		}
+	}
+}
+@media only screen and (orientation: landscape){
+	#subjects .medical_cont ul dl{
+		top: 60px;
+	}
+	#subjects .vaccination_cont ul dl{
+		top: 60px;
+	}
+	#subjects .more_btn{
+		margin-top: 200px;
+	}
+}
+
+/* Icons */
+#icons{
+	@include bgImage("../images/icon_bg.png", no-repeat, center center, cover);
+	
+	.inner_icons{
+		padding: 0 20px;
+		padding-top: 30px;
+	
+		ul{
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			justify-content: space-between;
+		
+			li{
+				float: left;
+				margin: 0 10px;
+				margin-bottom: 50px;
+			
+				a{
+					display: block;
+					width: 80px;
+					height: 80px;
+					text-align: center;
+				
+					img{	
+						width: 100%;
+					}
+					span{
+						margin-top: 5px;
+						color: $sub_color1;
+						line-height: 20px;
+					}
+				}
+			}
+		}
+	}
+}
+
+/* Gallery */
+#gallery{
+	padding-top: 35px;
+	padding-bottom: 40px;
+
+	.gallery_title{
+		padding: 0 20px;
+		text-align: center;
+	
+		h2{
+			font-family: $main_font;
+			color: $main_color1;
+		}
+		.kor{
+			margin-top: 5px;
+			font-family: $main_font;
+			font-weight: 300;
+			font-size: 12px;
+			line-height: 16px;
+			color: $sub_color2;
+		}
+		.eng{
+			font-size: 12px;
+			color: #000;
+		}
+	}
+	.photo_cont{
+		.photo{
+			position: relative;
+			margin-top: 20px;
+			width: 100%;
+			overflow: hidden;
+		
+			ul{
+				width: 6400px;
+			
+				li{
+					float: left;
+					width: 200px;
+					height: 200px;
+					margin-left: 30px;
+				
+					&:first-child{
+						margin-left: 75px;
+					}
+					img{
+						display: block;
+						width: 100%;
+						height: 100%;
+						box-sizing: border-box;
+						border-radius: 20px;
+					}
+				}
+			}
+			a.more_gallery{
+				display: block;
+				position: absolute;
+				text-align: center;
+				width: 30px;
+				height: 30px;
+				line-height: 20px;
+				right: 30%;
+				bottom: 5%;
+				background-color: rgba(255,255,255,0.8);
+				color: $main_color1;
+				font-size: 30px;
+				font-weight: bold;
+				box-sizing: border-box;
+				border-radius: 50%;
+			}
+		}
+		.controll_bar{
+			margin-top: 20px;
+			text-align: center;
+		}
+	}
+}
+input[type=range]{
+    -webkit-appearance: none;
+	width: 60%;
+	height: 12px;
+	border-radius: 20px;
+	background: $sub_color3;
+}
+input[type=range]::-webkit-slider-thumb { 
+	-webkit-appearance: none; 
+	background: $main_color1; 
+	cursor: pointer; 
+	height: 16px; 
+	width: 50px; 
+	box-shadow: 2px 1px 2px rgba(0,0,0,0.5), 0px 0px 1px #0d0d0d;
+	border-radius: 20px; 
+}
+@media only screen and (orientation: landscape){
+	input[type=range]::-webkit-slider-thumb { 
+		width: 80px; 
+	}
+}
+
+/* Notice */
+#notice{
+	padding: 0 20px;
+	padding-top: 15px;
+
+	.notice_title{
+		position: relative;
+		padding-left: 10px;
+	
+		h2{
+			color: $main_color1;
+			font-family: $main_font;
+		}
+		a.more_notice{
+			display: block;
+			position: absolute;
+			right: 0;
+			top: 10px;
+			text-align: center;
+			width: 20px;
+			height: 20px;
+			line-height: 15px;
+			background-color: $sub_color2;
+			@include boxShadow(2px, 2px, 2px, rgba(0,0,0,0.3));
+			color: $sub_color1;
+			font-weight: bold;
+		}
+	}
+	.notice_cont{
+		margin-top: 20px;
+		padding-left: 10px;
+	
+		ul li{
+			position: relative;
+			border-bottom: 1px dotted #ccc;
+		
+			.date{
+				position: absolute;
+				left: 75%;
+				top: 0;
+				color: #ccc;
+				line-height: 30px;
+				font-size: 13px;
+				text-align: right;
+			}
+			a{
+				display: block;
+				width: 70%;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				line-height: 30px;
+				font-size: 13px;
+				color: #000;
+			
+				&:hover{
+					color: #ccc;
+				}
+				&:before{
+					@extend %myAfter;
+					left: -10px;
+					top: 15px;
+					width: 3px;
+					height: 3px;
+					background-color: #000;
+					box-sizing: border-box;
+					border-radius: 50%;
+				}
+			}
+		}
+	}
+}
+@media only screen and (orientation: landscape){
+	#notice .notice_title a.more_notice{
+		right: 20%;
+	}
+	#notice .notice_cont ul li{
+		width: 80%;
+	}
+	#notice .notice_cont ul li a{
+		width: 100%;
+	}
+	#notice .notice_cont ul li .date{
+		right: 0;
+	}
+}
+
+/* Banners */
+#banners{
+	padding: 0 20px;
+	margin-top: 20px;
+	margin-bottom: 50px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	color: $sub_color1;
+	font-family: $main_font;
+
+	.left_banner{
+		position: relative;
+		width: calc((100% - 20px)/2);
+		height: 200px;
+		box-sizing: border-box;
+		padding-top: 20px;
+		padding-left: 10px;
+		@include bgImage("../images/dog.png", no-repeat, center center, cover);
+		@include boxShadow(2px, 2px, 2px, rgba(0,0,0,0.3));
+		
+		a{	
+			display: block;
+			position: absolute;
+			bottom: 10%;
+			right: 10%;
+			color: $sub_color1;
+			font-size: 20px;
+			font-weight: bold;
+		}
+	}
+	p{
+		font-size: 0.75em;
+	}
+	p.main_title{
+		margin-top: 20px;
+		font-size: 1.125em;
+		font-weight: 700;
+	}
+	
+	.right_banner{
+		position: relative;
+		margin-left: 20px;
+		width: calc((100% - 20px)/2);
+		height: 200px;
+		color: #555;
+		box-sizing: border-box;
+		padding-top: 20px;
+		padding-left: 10px;
+		@include bgImage("../images/cat.jpg", no-repeat, center center, cover);
+		@include boxShadow(2px, 2px, 2px, rgba(0,0,0,0.3));
+	
+		a{	
+			display: block;
+			position: absolute;
+			bottom: 10%;
+			right: 10%;
+			color: $sub_color2;
+			font-size: 20px;
+			font-weight: bold;
+		}
+		p.main_title{
+			margin-top: 25px;
+			font-size: 14px;
+		}
+	}
+}
+@media only screen and (orientation: landscape){
+	#banners p{
+		font-size: 0.875em;
+	}
+	#banners p.main_title{
+		font-size: 1.250em;
+	}
+	#banners .left_banner a{
+		font-size: 1.563em;
+	}
+	#banners .right_banner p.main_title{
+		font-size: 1.250em;
+	}
+	#banners .right_banner a{
+		font-size: 1.563em;
+	}
+}
+
+/* Footer */
+#footer{
+	.sns_cont{
+		padding: 10px 0;
+		background-color: #3b3b3b;
+		width: 100%;
+	
+		.inner_sns_cont{
+			padding: 0 20px;
+			text-align: center;
+		
+			.services ul li{
+				display: inline-block;
+			
+				a{
+					color: $sub_color1;
+					font-size: 13px;
+					padding: 0 5px;
+				}
+				&:first-child a{
+					padding-left: 0;
+				}
+			}
+			.sns{
+				margin-top: 20px;
+			
+				ul li{
+					display: inline-block;
+				
+					a{
+						display: block;
+						position: relative;
+						padding: 0 15px;
+					
+						&:after{
+							@extend %myAfter;
+							right: -3px;
+							top: 2px;
+							background-color: $sub_color1;
+							width: 1px;
+							height: 10px;
+							opacity: 0.5;
+						}
+					}
+					&:last-child a:after{
+						display: none;
+					}
+				}
+			}
+		}
+	}
+
+	.copyright_cont{
+		padding: 20px 0;
+		background-color: #333;
+		width: 100%;
+	
+		.inner_copyright_cont{
+			padding: 0 20px;
+			color: $sub_color1;
+		
+			.footer_text{
+				font-size: 14px;
+				line-height: 30px;
+			}
+			.copyright{
+				margin-top: 20px;
+				font-size: 12px;
+				display: flex;
+				flex-direction: row;
+				flex-wrap: nowrap;
+				align-items: center;
+			
+				img{
+					width: 100px;
+				}
+				p{
+					margin-left: 10px;
+				}
+			}
+		}
+	}
+}
